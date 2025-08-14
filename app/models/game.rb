@@ -2,6 +2,8 @@ class Game < ApplicationRecord
   belongs_to :user
   has_many :guesses
 
+  enum :status, { in_progress: 0, win: 1, loss: 2 }
+
   validates :solution,
             presence: true,
             length: { is: 4 },
