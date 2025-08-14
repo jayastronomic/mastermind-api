@@ -2,7 +2,7 @@ class AuthService
   def register(user_params)
     @user = User.new(user_params)
     if @user.save
-      @user
+      UserSerializer.new(@user).as_json
     end
   end
 end
