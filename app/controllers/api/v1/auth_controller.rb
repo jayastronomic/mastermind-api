@@ -7,12 +7,17 @@ class Api::V1::AuthController < ApplicationController
     render json: @auth_service.register(user_params), status: :created
   end
 
+  def is_logged_in
+    render json: @auth_service.is_logged_in(), status: :ok
+  end
+
   private
 
   def user_params
     params.require(:user).permit(
       :username,
-      :email
+      :email,
+      :password,
     )
   end
 end

@@ -1,6 +1,10 @@
-class AuthService
+class AuthService < ApplicationService
   def register(user_params)
-    @user = User.new(user_params)
-    UserSerializer.new(@user).as_json if @user.save!
+    @user = User.create!(user_params)
+    encode_token(user_id: @user.id)
+  end
+
+  def is_logged_in(requst)
+    decode_token(requst)
   end
 end
