@@ -33,6 +33,7 @@ services:
       ISSUER: http://localhost:3000
       SECRET: a-string-secret-at-least-256-bits-long
       AUDIENCE: mastermind-api
+      CONFIG_HOSTS: http://localhost:3000
 
 volumes:
   db_data:
