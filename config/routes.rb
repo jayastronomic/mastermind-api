@@ -5,8 +5,12 @@ Rails.application.routes.draw do
         post "register", to: "auth#register"
       end
 
-      scope :game do
-        post "create", to: "game#create"
+      scope :games do
+        post "create", to: "games#create"
+      end
+
+       scope :guesses do
+        post "create", to: "guesses#create"
       end
     end
   end

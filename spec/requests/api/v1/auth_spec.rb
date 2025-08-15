@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "User", type: :request do
+RSpec.describe "AuthController", type: :request do
   describe "POST /api/v1/auth/register" do
     let(:valid_params) do
       {

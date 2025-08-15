@@ -1,4 +1,4 @@
-class Api::V1::GameController < ApplicationController
+class Api::V1::GamesController < ApplicationController
   def initialize(game_service: GameService.new)
     @game_service = game_service
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Game", type: :request do
+RSpec.describe "GamesController", type: :request do
   describe "POST /api/v1/game/create" do
     let(:user) { User.create!(email: "test@example.com", username: "TestUser") }
 
