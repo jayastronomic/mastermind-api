@@ -30,6 +30,9 @@ services:
       DB_PASSWORD: password
       DB_HOST: db
       RAILS_ENV: development
+      ISSUER: http://localhost:3000
+      SECRET: a-string-secret-at-least-256-bits-long
+      AUDIENCE: mastermind-api
 
 volumes:
   db_data:
