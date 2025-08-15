@@ -27,10 +27,6 @@ module MastermindApi
     config.autoload_paths << Rails.root.join("app", "contract")
     config.autoload_paths << Rails.root.join("app", "errors")
 
-    config.middleware.insert_before 0, Rack::Runtime do |env|
-  Rails.logger.info "Host header: #{env['HTTP_HOST']}"
-end
-
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
