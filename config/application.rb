@@ -15,7 +15,7 @@ require "action_cable/engine"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
+# you"ve limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
 module MastermindApi
@@ -23,7 +23,9 @@ module MastermindApi
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
     config.autoload_lib(ignore: %w[assets tasks])
-    config.autoload_paths += %w[#{root}/app/services/**]
+    config.autoload_paths << Rails.root.join("app", "services")
+    config.autoload_paths << Rails.root.join("app", "contract")
+    config.autoload_paths << Rails.root.join("app", "errors")
 
     # Configuration for the application, engines, and railties goes here.
     #
