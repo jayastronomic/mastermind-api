@@ -1,4 +1,4 @@
-module JWTService
+module JwtService
   def encode_token(payload)
     JWT.encode(payload, "a-string-secret-at-least-256-bits-long", "HS256")
   end

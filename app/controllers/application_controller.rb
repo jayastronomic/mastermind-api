@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
   include GlobalErrorHandler
-  include JWTService
+  include JwtService
 
   before_action :authorized?
 

@@ -1,3 +1,3 @@
 class ApplicationService
-  include JWTService
+  include JwtService
 end
