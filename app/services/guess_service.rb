@@ -10,15 +10,11 @@ class GuessService
     # Find the associated game
     game = Game.find(guess.game_id)
 
+    # Exit Early if game already has 10 guesses
+    return { message: "Game over" } if game.guesses.length == 10
+
     guess.game = game
-
-    # Generate the report using the game
-    report = game.break_code(guess.value)
-
-    # Assign the report to the guess
-    guess.report = report.to_s
-
-    # Save the guess (now report is present, so full validations pass)
+    game.break_code(guess)
     guess.save!
 
     # Return serialized

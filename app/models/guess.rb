@@ -1,7 +1,12 @@
 class Guess < ApplicationRecord
   belongs_to :game
 
-  validates :report, presence: true, on: :create
+  validates :location_match,
+            :number_match,
+            presence: true,
+            numericality: { in: 1..4, only_integer: true },
+            on: :create
+
   validates :value,
             presence: true,
             length: { is: 4 },

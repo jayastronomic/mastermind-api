@@ -1,5 +1,5 @@
 class GuessSerializer < ActiveModel::Serializer
-  attributes :id, :report, :value
+  attributes :id, :location_match, :number_match, :value
 
   def attributes(*args)
     hash = super
