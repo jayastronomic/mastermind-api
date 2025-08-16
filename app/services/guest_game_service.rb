@@ -6,16 +6,15 @@ class GuestGameService < ApplicationService
   def find_or_create(params)
     session_id = params[:session_id]
     game = Rails.cache.read("guest_game_#{session_id}")
-    unless game
-      create(params)
+    if game.nil?
+      create
+    else
+      GameSerializer.new(game).as_json
     end
-    GameSerializer.new(game).as_json
   end
 
-  def guess(params)
-        session_id = params[:session_id]
+  def guess(params, session_id)
         guess = Guess.new(value: params[:value])
-
 
         game = Rails.cache.read("guest_game_#{session_id}")
         unless game
@@ -32,7 +31,7 @@ class GuestGameService < ApplicationService
 
   private
 
-  def create(params)
+  def create
     solution = @rand_gen_service.get_random_number
     session_id = SecureRandom.uuid
     game = Game.new(solution: solution, user_id: session_id)

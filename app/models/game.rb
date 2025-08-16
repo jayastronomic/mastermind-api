@@ -18,7 +18,7 @@ class Game < ApplicationRecord
     guess_remaining = []
 
     (0...solution.length).each do |i|
-      if solution[i] == value
+      if solution[i] == value[i]
         guess.location_match += 1
       else
         solution_remaining << solution[i]
