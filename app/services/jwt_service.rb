@@ -1,11 +1,11 @@
 module JwtService
-    ISSUER = ENV.fetch("ISSUER")
-    AUDIENCE = ENV.fetch("AUDIENCE")
+    JWT_ISSUER = ENV.fetch("JWT_ISSUER")
+    JWT_AUDIENCE = ENV.fetch("JWT_AUDIENCE")
 
   def encode_token(payload = {})
-      payload[:iss] = ISSUER
-      payload[:aud] = AUDIENCE
-    JWT.encode(payload, ENV.fetch("SECRET"), "HS256")
+      payload[:iss] = JWT_ISSUER
+      payload[:aud] = JWT_AUDIENCE
+    JWT.encode(payload, ENV.fetch("JWT_SECRET"), "HS256")
   end
 
   def decode_token(request)
@@ -13,7 +13,7 @@ module JwtService
     raise UnauthorizedError.new("No Authorization header provided.") unless header
     token = header.split(" ")[1]
     begin
-      get_current_user(JWT.decode(token, ENV.fetch("SECRET"), true, { algorithm: "HS256", iss: ISSUER, verify_iss: true }))
+      get_current_user(JWT.decode(token, ENV.fetch("JWT_SECRET"), true, { algorithm: "HS256", iss: JWT_ISSUER, verify_iss: true }))
     rescue JWT::DecodeError
       raise UnauthenticatedError
     end
