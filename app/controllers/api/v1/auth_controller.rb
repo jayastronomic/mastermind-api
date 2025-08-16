@@ -6,15 +6,15 @@ class Api::V1::AuthController < ApplicationController
   end
 
   def register
-    render json: @auth_service.register(user_params), status: :created
+    render json: ResponseEntity.success(data: @auth_service.register(user_params), message: -> { "Registration Succesful" }), status: :created
   end
 
   def login
-    render json: @auth_service.login(user_params), status: :created
+        render json: ResponseEntity.success(data: @auth_service.login(user_params), message: -> { "User Authenticated!" }), status: :ok
   end
 
   def is_logged_in
-    render json: @auth_service.is_logged_in(request), status: :ok
+        render json: ResponseEntity.success(data: @auth_service.is_logged_in(request), message: -> { "User is Signed in" }), status: :ok
   end
 
   private

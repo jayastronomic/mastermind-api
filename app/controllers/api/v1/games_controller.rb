@@ -4,7 +4,7 @@ class Api::V1::GamesController < ApplicationController
   end
 
   def create
-    render json: @game_service.create(game_params), status: :created
+    render jason: ResponseEntity.success(data: @game_service.create(game_params), message: -> { "Game created!" }), status: :created
   end
 
   private
