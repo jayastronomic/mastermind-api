@@ -12,8 +12,7 @@ Rails.application.routes.draw do
       end
 
       scope :guest_games do
-        get "create", to: "guest_games#create"
-        get "show/:session_id", to: "guest_games#show"
+        get "find_or_create", to: "guest_games#find_or_create"
         post "guess/:session_id", to: "guest_games#guess"
       end
 

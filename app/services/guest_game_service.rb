@@ -3,21 +3,11 @@ class GuestGameService < ApplicationService
     @rand_gen_service = rand_gen_service
   end
 
-  def create
-    solution = @rand_gen_service.get_random_number
-    session_id = SecureRandom.uuid
-    game = Game.new(solution: solution, user_id: session_id)
-
-    # Store the game in memory (e.g., Rails cache)
-    Rails.cache.write("guest_game_#{session_id}", game, expires_in: 1.hour)
-    GameSerializer.new(game).as_json
-  end
-
-  def show(params)
+  def find_or_create(params)
     session_id = params[:session_id]
     game = Rails.cache.read("guest_game_#{session_id}")
     unless game
-      raise GuestGameNotFoundError
+      create(params)
     end
     GameSerializer.new(game).as_json
   end
@@ -37,5 +27,18 @@ class GuestGameService < ApplicationService
         game.break_code(guess)
         Rails.cache.write("guest_game_#{session_id}", game, expires_in: 1.hour)
         GuessSerializer.new(guess).as_json
+  end
+
+
+  private
+
+  def create(params)
+    solution = @rand_gen_service.get_random_number
+    session_id = SecureRandom.uuid
+    game = Game.new(solution: solution, user_id: session_id)
+
+    # Store the game in memory (e.g., Rails cache)
+    Rails.cache.write("guest_game_#{session_id}", game, expires_in: 1.hour)
+    GameSerializer.new(game).as_json
   end
 end
