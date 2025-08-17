@@ -1,6 +1,4 @@
 class Api::V1::AuthController < ApplicationController
-  skip_before_action :authorized?
-
   def initialize(auth_service: AuthService.new)
     @auth_service = auth_service
   end
