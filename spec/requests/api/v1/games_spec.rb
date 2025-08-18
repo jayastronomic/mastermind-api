@@ -5,17 +5,17 @@ RSpec.describe "api/v1/games", type: :request do
     post "Create game" do
       tags "Games"
       consumes "application/json"
-      security [ bearerAuth: [] ]
+      security [bearerAuth: []]
       parameter name: :game, in: :body, schema: {
         type: :object,
         properties: {
           game: {
             type: :object,
             properties: { user_id: { type: :string, format: :uuid } },
-            required: %w[user_id]
-          }
+            required: %w[user_id],
+          },
         },
-        required: [ "game" ]
+        required: ["game"],
       }
 
       response "201", "created" do
@@ -39,28 +39,28 @@ RSpec.describe "api/v1/games", type: :request do
     get "Find latest game" do
       tags "Games"
       produces "application/json"
-      security [ bearerAuth: [] ]
+      security [bearerAuth: []]
       parameter name: :user_id, in: :path, type: :string
 
       response "200", "ok" do
         schema "$ref" => "#/components/schemas/ResponseEntity"
 
-      let(:user) do
-        User.create!(email: "g2@u.com", username: "g2", password: "secret12")
-      end
+        let(:user) do
+          User.create!(email: "g2@u.com", username: "g2", password: "secret12")
+        end
 
-      let(:Authorization) do
-        Game.create!(user: user, solution: "0123")
-        token = JWT.encode(
-          { user_id: user.id, iss: ENV.fetch("JWT_ISSUER", "http://localhost:3000"),
-            aud: ENV.fetch("JWT_AUDIENCE", "mastermind-api") },
-          ENV.fetch("JWT_SECRET", "a-string-secret-at-least-256-bits-long"),
-          "HS256"
-        )
-        "Bearer #{token}"
-      end
+        let(:Authorization) do
+          Game.create!(user: user, solution: "0123")
+          token = JWT.encode(
+            { user_id: user.id, iss: ENV.fetch("JWT_ISSUER", "http://localhost:3000"),
+              aud: ENV.fetch("JWT_AUDIENCE", "mastermind-api") },
+            ENV.fetch("JWT_SECRET", "a-string-secret-at-least-256-bits-long"),
+            "HS256"
+          )
+          "Bearer #{token}"
+        end
 
-      let(:user_id) { user.id }
+        let(:user_id) { user.id }
         run_test!
       end
     end

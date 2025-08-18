@@ -41,9 +41,9 @@ RSpec.describe "api/v1/guest_games", type: :request do
       parameter name: :guess, in: :body, schema: {
         type: :object,
         properties: {
-          guess: { type: :object, properties: { value: { type: :string } }, required: [ "value" ] }
+          guess: { type: :object, properties: { value: { type: :string } }, required: ["value"] },
         },
-        required: [ "guess" ]
+        required: ["guess"],
       }
 
       response "201", "guess accepted" do
