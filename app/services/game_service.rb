@@ -6,7 +6,7 @@ class GameService
   def create(game_params)
     game = Game.new(game_params)
     game.solution = @rand_gen_service.get_random_number
-    { message: "New game created! " } if game.save!
+    GameSerializer.new(game).as_json if game.save!
   end
 
   def find(params)
@@ -14,7 +14,6 @@ class GameService
     current_game = current_user.games.last
     GameSerializer.new(current_game).as_json
   end
-
 
   private
 

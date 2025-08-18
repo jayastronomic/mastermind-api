@@ -1,0 +1,234 @@
+---
+openapi: 3.0.1
+info:
+  title: Mastermind API
+  version: v1
+servers:
+- url: http://localhost:3000
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ResponseEntity:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: OK
+        data: {}
+        errors: {}
+      required:
+      - status
+      - message
+security:
+- bearerAuth: []
+paths:
+  "/api/v1/auth/register":
+    post:
+      summary: Register user
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '201':
+          description: registered
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    username:
+                      type: string
+                    password:
+                      type: string
+                  required:
+                  - email
+                  - username
+                  - password
+              required:
+              - user
+  "/api/v1/auth/login":
+    post:
+      summary: Login
+      tags:
+      - Auth
+      parameters: []
+      responses:
+        '200':
+          description: authenticated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+                  required:
+                  - email
+                  - password
+              required:
+              - user
+  "/api/v1/auth/is_logged_in":
+    get:
+      summary: Check auth
+      tags:
+      - Auth
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: ok
+  "/api/v1/games/create":
+    post:
+      summary: Create game
+      tags:
+      - Games
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                game:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                      format: uuid
+                  required:
+                  - user_id
+              required:
+              - game
+  "/api/v1/games/{user_id}":
+    get:
+      summary: Find latest game
+      tags:
+      - Games
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ResponseEntity"
+  "/api/v1/guesses/create":
+    post:
+      summary: Create guess
+      tags:
+      - Guesses
+      security:
+      - bearerAuth: []
+      parameters: []
+      responses:
+        '201':
+          description: created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                guess:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                    game_id:
+                      type: string
+                      format: uuid
+                  required:
+                  - value
+                  - game_id
+              required:
+              - guess
+  "/api/v1/guest_games/create":
+    post:
+      summary: Create guest game
+      tags:
+      - GuestGames
+      responses:
+        '200':
+          description: created guest game
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ResponseEntity"
+  "/api/v1/guest_games/find/{session_id}":
+    get:
+      summary: Find guest game
+      tags:
+      - GuestGames
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ResponseEntity"
+  "/api/v1/guest_games/guess/{session_id}":
+    post:
+      summary: Make a guess (guest)
+      tags:
+      - GuestGames
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: guess accepted
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                guess:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                  required:
+                  - value
+              required:
+              - guess

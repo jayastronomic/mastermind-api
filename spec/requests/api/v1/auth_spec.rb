@@ -1,61 +1,81 @@
-require 'rails_helper'
+require "swagger_helper"
 
-RSpec.describe "AuthController", type: :request do
-  describe "POST /api/v1/auth/register" do
-    let(:valid_params) do
-      {
-        user: {
-          email: "test@example.com",
-          username: "TestUsername"
-        }
+RSpec.describe "api/v1/auth", type: :request do
+  path "/api/v1/auth/register" do
+    post "Register user" do
+      security []
+      tags "Auth"
+      consumes "application/json"
+      parameter name: :user, in: :body, schema: {
+        type: :object,
+        properties: {
+          user: {
+            type: :object,
+            properties: {
+              email: { type: :string },
+              username: { type: :string },
+              password: { type: :string },
+            },
+            required: %w[email username password],
+          },
+        },
+        required: ["user"],
       }
-    end
 
-    let(:invalid_params) do
-      {
-        user: {
-          email: "", # blank email
-          username: "TestUsername"
-        }
+      response "201", "registered" do
+        schema "$ref" => "#/components/schemas/ResponseEntity"
+        let(:user) { { user: { email: "a@b.com", username: "john", password: "secret12" } } }
+        run_test!
+      end
+    end
+  end
+
+  path "/api/v1/auth/login" do
+    post "Login" do
+      security []
+      tags "Auth"
+      consumes "application/json"
+      parameter name: :user, in: :body, schema: {
+        type: :object,
+        properties: {
+          user: {
+            type: :object,
+            properties: {
+              email: { type: :string },
+              password: { type: :string },
+            },
+            required: %w[email password],
+          },
+        },
+        required: ["user"],
       }
-    end
 
-    context "when valid data is provided" do
-      it "creates a new user" do
-        expect {
-          post "/api/v1/auth/register", params: valid_params
-        }.to change(User, :count).by(1)
-      end
-
-      it "returns a 201 status" do
-        post "/api/v1/auth/register", params: valid_params
-        expect(response).to have_http_status(:created)
-      end
-
-      it "returns the created user data in JSON" do
-        post "/api/v1/auth/register", params: valid_params
-        json = JSON.parse(response.body)
-        expect(json["email"]).to eq("test@example.com")
-        expect(json["username"]).to eq("TestUsername")
+      response "200", "authenticated" do
+        schema "$ref" => "#/components/schemas/ResponseEntity"
+        before do
+          User.create!(email: "a@b.com", username: "john", password: "secret12")
+        end
+        let(:user) { { user: { email: "a@b.com", password: "secret12" } } }
+        run_test!
       end
     end
+  end
 
-    context "when invalid data is provided" do
-      it "does not create a new user" do
-        expect {
-          post "/api/v1/auth/register", params: invalid_params
-        }.not_to change(User, :count)
-      end
+  path "/api/v1/auth/is_logged_in" do
+    get "Check auth" do
+      tags "Auth"
+      security [bearerAuth: []]
 
-      it "returns a 422 status" do
-        post "/api/v1/auth/register", params: invalid_params
-        expect(response).to have_http_status(:unprocessable_content)
-      end
-
-      it "returns validation errors" do
-        post "/api/v1/auth/register", params: invalid_params
-        json = JSON.parse(response.body)
-        expect(json["errors"]).to be_present
+      response "200", "ok" do
+        schema "$ref" => "#/components/schemas/ResponseEntity"
+        let(:Authorization) do
+          token = JWT.encode({ user_id: User.create!(email: "x@y.com", username: "x", password: "secret12").id,
+                               iss: ENV.fetch("JWT_ISSUER", "http://localhost:3000"),
+                               aud: ENV.fetch("JWT_AUDIENCE", "mastermind-api") },
+                             ENV.fetch("JWT_SECRET", "a-string-secret-at-least-256-bits-long"), "HS256")
+          "Bearer #{token}"
+        end
+        run_test!
       end
     end
   end
