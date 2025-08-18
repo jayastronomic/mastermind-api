@@ -16,6 +16,10 @@ module GlobalErrorHandler
       rescue_from UnauthorizedError do |exception|
         render json: ResponseEntity.error(message: -> { exception.message }, errors: [ "Unauthorized" ]), status: :unauthorized
       end
+
+      rescue_from GuestGameNotFoundError do |exception|
+        render json: ResponseEntity.error(message: -> { exception.message }, errors: [ "Game Not Found" ]), status: :not_found
+      end
     end
   end
 end

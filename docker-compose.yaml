@@ -30,9 +30,9 @@ services:
       DB_PASSWORD: password
       DB_HOST: db
       RAILS_ENV: development
-      ISSUER: http://localhost:3000
-      SECRET: a-string-secret-at-least-256-bits-long
-      AUDIENCE: mastermind-api
+      JWT_ISSUER: http://localhost:3000
+      JWT_SECRET: a-string-secret-at-least-256-bits-long
+      JWT_AUDIENCE: mastermind-api
       CONFIG_HOSTS: http://localhost:3000
 
 volumes:

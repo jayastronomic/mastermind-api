@@ -4,8 +4,13 @@ class Api::V1::GamesController < ApplicationController
   end
 
   def create
-    render json: @game_service.create(game_params), status: :created
+    render json: ResponseEntity.success(data: @game_service.create(game_params), message: -> { "Game created!" }), status: :created
   end
+
+  def find
+    render json: ResponseEntity.success(data: @game_service.find(params), message: -> { "Game found!" }), status: :ok
+  end
+
 
   private
 

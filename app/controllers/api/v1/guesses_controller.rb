@@ -4,7 +4,7 @@ class Api::V1::GuessesController < ApplicationController
   end
 
   def create
-    render json: @guess_service.create(guess_params), status: :created
+    render json: ResponseEntity.success(data: @guess_service.create(guess_params), message: -> { "Guess created!" }), status: :created
   end
 
   private

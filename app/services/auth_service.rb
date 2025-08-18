@@ -10,7 +10,7 @@ class AuthService < ApplicationService
     encode_token(user_id: user.id)
   end
 
-  def is_logged_in(requst)
-    decode_token(requst)
+  def is_logged_in(request)
+    decode_token(request)
   end
 end

@@ -19,5 +19,12 @@ wait_for_db
 echo "Running database migrations..."
 bin/rails db:migrate
 
+# Enable dev cache if in development
+if [ "$RAILS_ENV" = "development" ]; then
+  echo "Enabling Rails development cache..."
+  bin/rails dev:cache
+fi
+
+
 # Then exec the container's main process (what's set as CMD in Dockerfile)
 exec "$@"

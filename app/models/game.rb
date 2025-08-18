@@ -10,18 +10,19 @@ class Game < ApplicationRecord
             format: { with: /\A[0-7]{4}\z/, message: "must be exactly 4 digits between 0 and 7" }
 
   def break_code(guess)
-    report = { exact_match: 0, number_match: 0 }
+    guesses << guess
+    value = guess.value
 
-    # Step 1: Exact matches
+    # Step 1: Location matches
     solution_remaining = []
     guess_remaining = []
 
     (0...solution.length).each do |i|
-      if solution[i] == guess[i]
-        report[:exact_match] += 1
+      if solution[i] == value[i]
+        guess.location_match += 1
       else
         solution_remaining << solution[i]
-        guess_remaining << guess[i]
+        guess_remaining << value[i]
       end
     end
 
@@ -29,11 +30,18 @@ class Game < ApplicationRecord
     solution_counts = solution_remaining.tally  # { number => count }
     guess_remaining.each do |g|
       if solution_counts[g] && solution_counts[g] > 0
-        report[:number_match] += 1
+        guess.number_match += 1
         solution_counts[g] -= 1
       end
     end
 
-    report
+    # Step 3: Update status
+    if guess.location_match == 4
+      self.status = :win
+    elsif guesses.length >= 10
+      self.status = :loss
+    else
+      self.status = :in_progress
+    end
   end
 end

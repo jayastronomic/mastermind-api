@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # Rswag
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
   namespace :api do
     namespace :v1 do
       scope :auth do
@@ -9,6 +12,13 @@ Rails.application.routes.draw do
 
       scope :games do
         post "create", to: "games#create"
+        get  "/:user_id", to: "games#find"
+      end
+
+      scope :guest_games do
+        post "create", to: "guest_games#create"
+        get "find/:session_id", to: "guest_games#find"
+        post "guess/:session_id", to: "guest_games#guess"
       end
 
       scope :guesses do
