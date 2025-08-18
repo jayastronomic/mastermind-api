@@ -35,11 +35,13 @@ class Game < ApplicationRecord
       end
     end
 
-    # Step 3: Get Report
+    # Step 3: Update status
     if guess.location_match == 4
       self.status = :win
-    elsif guesses.length == 4
+    elsif guesses.length >= 10
       self.status = :loss
+    else
+      self.status = :in_progress
     end
   end
 end

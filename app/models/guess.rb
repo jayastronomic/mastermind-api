@@ -4,7 +4,7 @@ class Guess < ApplicationRecord
   validates :location_match,
             :number_match,
             presence: true,
-            numericality: { in: 1..4, only_integer: true },
+            numericality: { in: 0..4, only_integer: true },
             on: :create
 
   validates :value,

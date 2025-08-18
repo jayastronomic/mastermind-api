@@ -1,4 +1,6 @@
 class Api::V1::AuthController < ApplicationController
+  skip_before_action :authorized?, only: [ :register, :login ]
+
   def initialize(auth_service: AuthService.new)
     @auth_service = auth_service
   end
@@ -8,14 +10,11 @@ class Api::V1::AuthController < ApplicationController
   end
 
   def login
-        render json: ResponseEntity.success(data: @auth_service.login(user_params), message: -> { "User Authenticated!" }), status: :ok
+    render json: ResponseEntity.success(data: @auth_service.login(user_params), message: -> { "User Authenticated!" }), status: :ok
   end
 
   def is_logged_in
-        puts "+++++++++++++++++++++++++++++++++++++++"
-        puts params
-        puts "+++++++++++++++++++++++++++++++++++++++"
-        render json: ResponseEntity.success(data: @auth_service.is_logged_in(params), message: -> { "User is Signed in" }), status: :ok
+    render json: ResponseEntity.success(data: @auth_service.is_logged_in(request), message: -> { "User is Signed in" }), status: :ok
   end
 
   private

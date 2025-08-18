@@ -16,6 +16,7 @@ class GuessService
     guess.game = game
     game.break_code(guess)
     guess.save!
+    game.save!
 
     # Return serialized
     GuessSerializer.new(guess).as_json

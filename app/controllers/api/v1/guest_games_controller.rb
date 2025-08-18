@@ -5,8 +5,12 @@ class Api::V1::GuestGamesController < ApplicationController
       @guest_game_service = guest_game_service
   end
 
-  def find_or_create
-    render json: ResponseEntity.success(data: @guest_game_service.find_or_create(params), message: -> { "Game Created!" }), status: :ok
+  def create
+    render json: ResponseEntity.success(data: @guest_game_service.create, message: -> { "Game Created!" }), status: :ok
+  end
+
+  def find
+    render json: ResponseEntity.success(data: @guest_game_service.find(params), message: -> { "Game Found!" }), status: :ok
   end
 
   def guess

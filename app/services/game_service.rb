@@ -4,8 +4,21 @@ class GameService
   end
 
   def create(game_params)
-    @game = Game.new(game_params)
-    @game.solution = @rand_gen_service.get_random_number
-    GameSerializer.new(@game).as_json if @game.save!
+    game = Game.new(game_params)
+    game.solution = @rand_gen_service.get_random_number
+    { message: "New game created! " } if game.save!
+  end
+
+  def find(params)
+    current_user = User.find(params[:user_id])
+    current_game = current_user.games.last
+    GameSerializer.new(current_game).as_json
+  end
+
+
+  private
+
+  def get_current_user(id)
+    User.find(id)
   end
 end
