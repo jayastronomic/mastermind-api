@@ -11,7 +11,7 @@ class GuessService
     game = Game.find(guess.game_id)
 
     # Exit Early if game already has 10 guesses
-    return { message: "Game over" } if game.guesses.length == 10
+    return { message: "Game over" } if game.status != "in_progress"
 
     guess.game = game
     game.break_code(guess)
