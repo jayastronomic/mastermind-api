@@ -41,5 +41,8 @@ class GuestGameService < ApplicationService
         GuessSerializer.new(guess).as_json
   end
 
-  private
+  def delete(params)
+    session_id = params[:session_id]
+    Rails.cache.delete("guest_game_#{session_id}")
+  end
 end

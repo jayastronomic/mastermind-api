@@ -17,6 +17,10 @@ class Api::V1::GuestGamesController < ApplicationController
     render json: ResponseEntity.success(data: @guest_game_service.guess(guest_game_params, params[:session_id]), message: -> { "Guess Attempt!" }), status: :created
   end
 
+  def delete
+    render json: ResponseEntity.success(data: @guest_game_service.delete(params), message: -> { "Game Ended!" }), status: :ok
+  end
+
   private
 
   def guest_game_params
