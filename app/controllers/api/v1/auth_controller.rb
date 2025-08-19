@@ -4,11 +4,33 @@ class Api::V1::AuthController < ApplicationController
   end
 
   def register
-    render json: ResponseEntity.success(data: @auth_service.register(user_params), message: -> { "Registration Succesful" }), status: :created
+    token, user = @auth_service.register(user_params)
+
+    # Set HTTP-only cookie
+    cookies.signed[:jwt_token] = {
+      value: token,
+      httponly: true,
+      secure: Rails.env.production?,
+      same_site: :lax,
+      expires: 24.hours.from_now,
+    }
+
+    render json: ResponseEntity.success(data: user, message: -> { "Registration Successful" }), status: :created
   end
 
   def login
-    render json: ResponseEntity.success(data: @auth_service.login(user_params), message: -> { "User Authenticated!" }), status: :ok
+    token, user = @auth_service.login(user_params)
+
+    # Set HTTP-only cookie
+    cookies.signed[:jwt_token] = {
+      value: token,
+      httponly: true,
+      secure: Rails.env.production?,
+      same_site: :lax,
+      expires: 24.hours.from_now,
+    }
+
+    render json: ResponseEntity.success(data: user, message: -> { "User Authenticated!" }), status: :ok
   end
 
   def is_logged_in
