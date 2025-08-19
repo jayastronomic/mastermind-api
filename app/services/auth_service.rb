@@ -11,6 +11,7 @@ class AuthService < ApplicationService
   end
 
   def is_logged_in(params)
+    puts params
     User.find(params[:user_id])
   end
 end
