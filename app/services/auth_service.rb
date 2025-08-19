@@ -10,7 +10,7 @@ class AuthService < ApplicationService
     encode_token(user_id: user.id)
   end
 
-  def is_logged_in(request)
-    decode_token(request)
+  def is_logged_in(params)
+    User.find(params[:user_id])
   end
 end

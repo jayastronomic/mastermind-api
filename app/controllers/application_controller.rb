@@ -2,11 +2,11 @@ class ApplicationController < ActionController::API
   include GlobalErrorHandler
   include JwtService
 
-  before_action :authorized?
+  # before_action :authorized?
 
-  private
+  # private
 
-  def authorized?
-    decode_token(request)
-  end
+  # def authorized?
+  #   decode_token(request)
+  # end
 end

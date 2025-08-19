@@ -1,5 +1,5 @@
 class Api::V1::GuestGamesController < ApplicationController
-  skip_before_action :authorized?
+  # skip_before_action :authorized?
 
   def initialize(guest_game_service: GuestGameService.new)
     @guest_game_service = guest_game_service
