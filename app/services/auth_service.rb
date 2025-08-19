@@ -5,7 +5,7 @@ class AuthService < ApplicationService
   end
 
   def login(user_params)
-    user = User.find_by(email: user_params[:email])
+    user = User.find_by(username: user_params[:username])
     raise InvalidCredentialsError unless user && user.authenticate(user_params[:password])
     encode_token(user_id: user.id)
   end
