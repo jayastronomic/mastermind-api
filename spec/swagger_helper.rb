@@ -1,9 +1,9 @@
 require "rails_helper"
 
 RSpec.configure do |config|
-  config.swagger_root = Rails.root.join("swagger").to_s
+  config.openapi_root = Rails.root.join("swagger").to_s
 
-  config.swagger_docs = {
+  config.openapi_specs = {
     "v1/swagger.yaml" => {
       openapi: "3.0.1",
       info: {
@@ -14,13 +14,6 @@ RSpec.configure do |config|
         { url: "http://localhost:3000" },
       ],
       components: {
-        securitySchemes: {
-          bearerAuth: {
-            type: :http,
-            scheme: :bearer,
-            bearerFormat: "JWT",
-          },
-        },
         schemas: {
           ResponseEntity: {
             type: :object,
@@ -34,9 +27,8 @@ RSpec.configure do |config|
           },
         },
       },
-      security: [{ bearerAuth: [] }],
     },
   }
 
-  config.swagger_format = :yaml
+  config.openapi_format = :yaml
 end

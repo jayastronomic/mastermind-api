@@ -6,7 +6,7 @@ class Api::V1::GuestGamesController < ApplicationController
   end
 
   def create
-    render json: ResponseEntity.success(data: @guest_game_service.create, message: -> { "Game Created!" }), status: :ok
+    render json: ResponseEntity.success(data: @guest_game_service.create, message: -> { "Game Created!" }), status: :created
   end
 
   def find

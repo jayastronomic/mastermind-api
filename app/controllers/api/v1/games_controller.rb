@@ -11,7 +11,6 @@ class Api::V1::GamesController < ApplicationController
     render json: ResponseEntity.success(data: @game_service.find(params), message: -> { "Game found!" }), status: :ok
   end
 
-
   private
 
   def game_params

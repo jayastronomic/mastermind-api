@@ -6,11 +6,6 @@ info:
 servers:
 - url: http://localhost:3000
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
   schemas:
     ResponseEntity:
       type: object
@@ -26,8 +21,6 @@ components:
       required:
       - status
       - message
-security:
-- bearerAuth: []
 paths:
   "/api/v1/auth/register":
     post:
@@ -38,6 +31,8 @@ paths:
       responses:
         '201':
           description: registered
+        '422':
+          description: unprocessable content
       requestBody:
         content:
           application/json:
@@ -47,14 +42,11 @@ paths:
                 user:
                   type: object
                   properties:
-                    email:
-                      type: string
                     username:
                       type: string
                     password:
                       type: string
                   required:
-                  - email
                   - username
                   - password
               required:
@@ -77,22 +69,26 @@ paths:
                 user:
                   type: object
                   properties:
-                    email:
+                    username:
                       type: string
                     password:
                       type: string
                   required:
-                  - email
+                  - username
                   - password
               required:
               - user
-  "/api/v1/auth/is_logged_in":
+  "/api/v1/auth/is_logged_in/{user_id}":
     get:
-      summary: Check auth
+      summary: Get auth user
       tags:
       - Auth
-      security:
-      - bearerAuth: []
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           description: ok
@@ -101,8 +97,6 @@ paths:
       summary: Create game
       tags:
       - Games
-      security:
-      - bearerAuth: []
       parameters: []
       responses:
         '201':
@@ -128,8 +122,6 @@ paths:
       summary: Find latest game
       tags:
       - Games
-      security:
-      - bearerAuth: []
       parameters:
       - name: user_id
         in: path
@@ -148,8 +140,6 @@ paths:
       summary: Create guess
       tags:
       - Guesses
-      security:
-      - bearerAuth: []
       parameters: []
       responses:
         '201':
@@ -179,7 +169,7 @@ paths:
       tags:
       - GuestGames
       responses:
-        '200':
+        '201':
           description: created guest game
           content:
             application/json:
@@ -215,7 +205,7 @@ paths:
         schema:
           type: string
       responses:
-        '200':
+        '201':
           description: guess accepted
       requestBody:
         content:
@@ -232,3 +222,17 @@ paths:
                   - value
               required:
               - guess
+  "/api/v1/guest_games/{session_id}":
+    delete:
+      summary: Delete a game
+      tags:
+      - GuestGames
+      parameters:
+      - name: session_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: guest game deleted
