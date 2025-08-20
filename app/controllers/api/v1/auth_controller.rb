@@ -27,7 +27,7 @@ class Api::V1::AuthController < ApplicationController
       httponly: true,
       secure: Rails.env.production?,
       same_site: :lax,
-      expires: 24.hours.from_now,
+      expires: 20.years.from_now,
     }
 
     render json: ResponseEntity.success(data: user, message: -> { "User Authenticated!" }), status: :ok
