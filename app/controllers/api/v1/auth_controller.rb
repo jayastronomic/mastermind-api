@@ -11,7 +11,7 @@ class Api::V1::AuthController < ApplicationController
       value: token,
       httponly: true,
       secure: Rails.env.production?,
-      same_site: :lax,
+      same_site: :none,
       expires: 24.hours.from_now,
     }
 
