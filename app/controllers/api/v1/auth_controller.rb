@@ -34,7 +34,7 @@ class Api::V1::AuthController < ApplicationController
   end
 
   def is_logged_in
-    Rails.logger.info cookies[:jwt_token]
+    Rails.logger.info cookies
     render json: ResponseEntity.success(data: @auth_service.is_logged_in(params), message: -> { "User is Signed in" }), status: :ok
   end
 
