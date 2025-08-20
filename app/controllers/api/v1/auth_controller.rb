@@ -34,6 +34,7 @@ class Api::V1::AuthController < ApplicationController
   end
 
   def is_logged_in
+    Rails.logger.info request.headers.env.select { |k, v| k.start_with?("HTTP_") }
     render json: ResponseEntity.success(data: @auth_service.is_logged_in(params), message: -> { "User is Signed in" }), status: :ok
   end
 
