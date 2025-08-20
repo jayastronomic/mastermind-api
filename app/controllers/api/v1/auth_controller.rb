@@ -7,7 +7,7 @@ class Api::V1::AuthController < ApplicationController
     token, user = @auth_service.register(user_params)
 
     # Set HTTP-only cookie
-    cookies.signed[:jwt_token] = {
+    cookies[:jwt_token] = {
       value: token,
       httponly: true,
       secure: Rails.env.production?,
@@ -22,7 +22,7 @@ class Api::V1::AuthController < ApplicationController
     token, user = @auth_service.login(user_params)
 
     # Set HTTP-only cookie
-    cookies.signed[:jwt_token] = {
+    cookies[:jwt_token] = {
       value: token,
       httponly: true,
       secure: Rails.env.production?,
