@@ -10,8 +10,8 @@ class GameService
   end
 
   def find(params)
-    current_user = User.find(params[:user_id])
-    current_game = current_user.games.last
+    user = User.find(params[:user_id])
+    current_game = user.last_game
     GameSerializer.new(current_game).as_json
   end
 

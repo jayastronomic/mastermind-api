@@ -1,12 +1,10 @@
 class Api::V1::AuthController < ApplicationController
-  # skip_before_action :authorized?, only: [ :register, :login ]
-
   def initialize(auth_service: AuthService.new)
     @auth_service = auth_service
   end
 
   def register
-    render json: ResponseEntity.success(data: @auth_service.register(user_params), message: -> { "Registration Succesful" }), status: :created
+    render json: ResponseEntity.success(data: @auth_service.register(user_params), message: -> { "Registration Successful" }), status: :created
   end
 
   def login

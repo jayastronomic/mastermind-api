@@ -11,7 +11,6 @@ class AuthService < ApplicationService
   end
 
   def is_logged_in(params)
-    puts params
-    User.find(params[:user_id])
+    UserSerializer.new(User.find(params[:user_id])).as_json
   end
 end

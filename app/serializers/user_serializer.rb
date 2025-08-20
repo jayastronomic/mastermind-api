@@ -1,5 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :username
+  attributes :id, :username
 
   def attributes(*args)
     hash = super

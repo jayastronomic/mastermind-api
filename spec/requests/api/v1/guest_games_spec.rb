@@ -8,7 +8,7 @@ RSpec.describe "api/v1/guest_games", type: :request do
       tags "GuestGames"
       produces "application/json"
 
-      response "200", "created guest game" do
+      response "201", "created guest game" do
         schema "$ref" => "#/components/schemas/ResponseEntity"
         run_test!
       end
@@ -26,7 +26,7 @@ RSpec.describe "api/v1/guest_games", type: :request do
         let(:session_id) do
           # create first
           post "/api/v1/guest_games/create"
-          JSON.parse(response.body).dig("data", "id") || "nonexistent"
+          JSON.parse(response.body).dig("data", "userId") || "nonexistent"
         end
         run_test!
       end
@@ -50,9 +50,25 @@ RSpec.describe "api/v1/guest_games", type: :request do
         schema "$ref" => "#/components/schemas/ResponseEntity"
         let(:session_id) do
           post "/api/v1/guest_games/create"
-          JSON.parse(response.body).dig("data", "user_id")
+          JSON.parse(response.body).dig("data", "userId")
         end
         let(:guess) { { guess: { value: "0123" } } }
+        run_test!
+      end
+    end
+  end
+
+  path "/api/v1/guest_games/{session_id}" do
+    delete "Delete a game" do
+      tags "GuestGames"
+      parameter name: :session_id, in: :path, type: :string
+
+      response "200", "guest game deleted" do
+        schema "$ref" => "#/components/schemas/ResponseEntity"
+        let(:session_id) do
+          post "/api/v1/guest_games/create"
+          JSON.parse(response.body).dig("data", "userId")
+        end
         run_test!
       end
     end
