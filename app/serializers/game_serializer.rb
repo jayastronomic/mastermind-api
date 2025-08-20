@@ -8,6 +8,6 @@ class GameSerializer < ActiveModel::Serializer
   end
 
   def solution
-    object.solution if object.status != "in_progess"
+    object.solution if object.status != "in_progress"
   end
 end
