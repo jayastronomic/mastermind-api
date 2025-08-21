@@ -6,19 +6,19 @@ module GlobalErrorHandler
       end
 
       rescue_from InvalidCredentialsError do |exception|
-        render json: ResponseEntity.error(message: -> { exception.message }, errors: [ "invalid email/password" ]), status: :unauthorized
+        render json: ResponseEntity.error(message: -> { exception.message }, errors: ["invalid email/password"]), status: :unauthorized
       end
 
       rescue_from UnauthenticatedError do |exception|
-        render json: ResponseEntity.error(message: -> { exception.message }, errors: [ "Please log in" ]), status: :forbidden
+        render json: ResponseEntity.error(message: -> { exception.message }, errors: ["Please log in"]), status: :forbidden
       end
 
       rescue_from UnauthorizedError do |exception|
-        render json: ResponseEntity.error(message: -> { exception.message }, errors: [ "Unauthorized" ]), status: :unauthorized
+        render json: ResponseEntity.error(message: -> { exception.message }, errors: ["Unauthorized"]), status: :unauthorized
       end
 
       rescue_from GuestGameNotFoundError do |exception|
-        render json: ResponseEntity.error(message: -> { exception.message }, errors: [ "Game Not Found" ]), status: :not_found
+        render json: ResponseEntity.error(message: -> { exception.message }, errors: ["Game Not Found"]), status: :not_found
       end
     end
   end

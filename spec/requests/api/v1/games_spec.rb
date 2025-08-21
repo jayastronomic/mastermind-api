@@ -52,4 +52,27 @@ RSpec.describe "api/v1/games", type: :request do
       end
     end
   end
+
+  path "/api/v1/games/{id}" do
+    delete "Delete game" do
+      tags "Games"
+      produces "application/json"
+      parameter name: :id, in: :path, type: :string
+
+      response "200", "ok" do
+        schema "$ref" => "#/components/schemas/ResponseEntity"
+
+        let(:user) do
+          User.create!(username: "g2", password: "secret12")
+        end
+
+        let(:id) do
+          game = Game.create!(user: user, solution: "0123")
+          game.id
+        end
+
+        run_test!
+      end
+    end
+  end
 end
