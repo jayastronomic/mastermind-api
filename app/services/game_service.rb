@@ -16,7 +16,7 @@ class GameService
   end
 
   def delete(params)
-    current_game = Game.(params[:id])
+    current_game = Game.find(params[:id])
     current_game.destroy
     GameSerializer.new(current_game).as_json
   end
