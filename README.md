@@ -12,6 +12,19 @@ This project implements the Mastermind game as specified in the LinkedIn Backend
 
 ## 🏗️ Architecture & Thought Process
 
+### Security Architecture
+
+This backend is designed to be deployed behind an **API Gateway proxy** that enforces security policies and provides an additional layer of protection. The API Gateway acts as a security boundary that:
+
+- **Rate Limiting**: Enforces request rate limits to prevent abuse
+- **Authentication**: Validates JWT tokens before requests reach the Rails application
+- **Authorization**: Checks user permissions and access controls
+- **Request/Response Filtering**: Sanitizes and validates incoming requests
+- **SSL/TLS Termination**: Handles HTTPS encryption and certificate management
+- **Request Logging**: Provides comprehensive audit trails for security monitoring
+
+The Rails application focuses on business logic while the API Gateway handles security concerns, following the principle of separation of concerns.
+
 ### Design Decisions
 
 1. **Rails API Mode**: Chose Rails API mode for a lightweight, focused backend that serves JSON responses
@@ -19,6 +32,7 @@ This project implements the Mastermind game as specified in the LinkedIn Backend
 3. **Service Layer Pattern**: Separated business logic into service classes (AuthService, GameService, GuestGameService) for better testability and maintainability
 4. **ResponseEntity Wrapper**: Created a consistent response format across all endpoints for better API documentation and client integration
 5. **Guest Game Support**: Implemented session-based guest games using Rails cache for users who don't want to register
+6. **API Gateway Integration**: Designed the application to work seamlessly with API Gateway security enforcement
 
 ### Code Structure
 
@@ -44,6 +58,20 @@ app/
 ```
 
 ## 🚀 Features
+
+### 🚀 Live API Deployment
+
+This API is **deployed and ready to use** on Railway with API Gateway integration! You don't need to run anything locally to start using the API.
+
+**API Gateway Endpoint:** `https://bdvadxydn6.execute-api.us-east-2.amazonaws.com`
+
+The API is fully functional and includes all security features through the API Gateway proxy. You can start making requests immediately using the endpoint above.
+
+**📖 To see the complete API documentation and all available endpoints:**
+
+- Start the app locally (see Installation & Setup section below)
+- Navigate to `http://localhost:3000/api-docs` to view the interactive OpenAPI specifications
+- This will show you all available endpoints, request/response schemas, and allow you to test the API directly
 
 ### Core Features (Challenge Requirements)
 
@@ -165,7 +193,30 @@ This is the easiest way to get started and ensures consistent environment across
 
 ## 🎮 How to Play
 
-### Using the API Documentation
+### 🚀 Using the Live API (Recommended)
+
+The API is deployed and ready to use! You can start playing immediately without any setup.
+
+**Base URL:** `https://bdvadxydn6.execute-api.us-east-2.amazonaws.com`
+
+### Using a REST Client (Postman, curl, etc.)
+
+1. **Create a guest game**
+
+   ```bash
+   curl -X POST https://bdvadxydn6.execute-api.us-east-2.amazonaws.com/api/v1/guest_games/create
+   ```
+
+2. **Make a guess**
+   ```bash
+   curl -X POST https://bdvadxydn6.execute-api.us-east-2.amazonaws.com/api/v1/guest_games/guess/YOUR_SESSION_ID \
+     -H "Content-Type: application/json" \
+     -d '{"guess": {"value": "1234"}}'
+   ```
+
+### Using the API Documentation (Local Development)
+
+If you want to run the API locally for development:
 
 1. **Open the API documentation**
 
@@ -190,7 +241,7 @@ This is the easiest way to get started and ensures consistent environment across
    - You have 10 attempts total
    - The game ends when you guess correctly or run out of attempts
 
-### Using a REST Client (Postman, curl, etc.)
+### Using a REST Client (Postman, curl, etc.) - Local Development
 
 1. **Create a guest game**
 
