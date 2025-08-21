@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       scope :games do
         post "create", to: "games#create"
         get "/:user_id", to: "games#find"
+        delete "/:id", to: "games#delete"
       end
 
       scope :guest_games do

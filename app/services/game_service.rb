@@ -15,6 +15,12 @@ class GameService
     GameSerializer.new(current_game).as_json
   end
 
+  def delete(params)
+    current_game = Game.find(params[:id])
+    current_game.destroy
+    GameSerializer.new(current_game).as_json
+  end
+
   private
 
   def get_current_user(id)
